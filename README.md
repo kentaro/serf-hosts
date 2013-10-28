@@ -1,4 +1,4 @@
-# Automatic `/etchosts` management with Serf
+# Automatic `/etc/hosts` management with Serf
 
 ## Usage
 
