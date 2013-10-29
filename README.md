@@ -2,7 +2,7 @@
 
 ## Problem
 
-In the cloud world, many hosts appear and vanish. Since we don't want to bother to manage some internal DNS service to keep its availability, we have been updated `/etc/hosts` file periodically with cron and AWS API.
+In the cloud world, many hosts appear and vanish. Since we don't want to bother to manage some internal DNS service while keeping its availability, we have been updated `/etc/hosts` file periodically with cron and AWS API.
 
 There are, however, several problems in that way of updating `/etc/hosts`:
 
