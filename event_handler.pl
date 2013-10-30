@@ -39,9 +39,9 @@ elsif (
     }
 
     close $fh;
+    close $tmp_fh;
 
     File::Copy::move($tmp_file, $file) or
         die "Failed to move ${tmp_file} to ${file}";
-    close $tmp_fh;
 }
 
