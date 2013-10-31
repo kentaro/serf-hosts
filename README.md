@@ -2,18 +2,18 @@
 
 ## Problem
 
-In the cloud world, many hosts appear and vanish. Since we don't want to bother to manage some internal DNS service while keeping its availability, we have been updated `/etc/hosts` file periodically with cron and AWS API.
+In the cloud world, many hosts appear and vanish. Since we don't want to bother to manage some internal DNS service while keeping its availability, we have been updating `/etc/hosts` file periodically with cron and AWS API.
 
 There are, however, several problems in that way of updating `/etc/hosts`:
 
   1. It's far from real time
-  2. There are many other components that need to be updated in likely way; for exemple, nagios, munin, etc.
+  2. There are many other components that need to be updated in a likely way; for example, nagios, munin, etc.
 
-It's laborious that we have to write scripts for each puropses and edit crontab.
+It's laborious that we have to write scripts for each purposes and edit crontab.
 
 ## Solution
 
-[Serf](http://www.serfdom.io/) can solve the problem. It provides us decentralized hosts discovery solution. Once we launch serf agents in eacho hosts, the cluster itself works like it is managed completely. In addition, it's almost real time.
+[Serf](http://www.serfdom.io/) can solve the problem. It provides us decentralized hosts discovery solution. Once we launch serf agents in each hosts, the cluster itself works like it is managed completely. In addition, it's almost real time.
 
 ## Example
 
