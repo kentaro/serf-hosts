@@ -6,7 +6,7 @@ use Fcntl qw(:flock);
 use File::Temp qw(tempfile);
 use File::Copy;
 
-my $file = $ARGV[0] || 'etc/hosts';
+my $file = $ARGV[0] || '/etc/hosts';
 my ($name, $address, $role) = split(/\s+/, <STDIN>);
 my $event = $ENV{SERF_EVENT};
 
