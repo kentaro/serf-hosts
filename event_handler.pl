@@ -7,7 +7,7 @@ use File::Temp qw(tempfile);
 use File::Copy;
 
 my $file = $ARGV[0] || 'etc/hosts';
-my ($name, $address, $role, $tags) = split(/\s+/, <STDIN>);
+my ($name, $address, $role, $tags) = split(/\t/, <STDIN>);
 my $event = $ENV{SERF_EVENT};
 
 if ($event eq 'member-join') {
