@@ -12,7 +12,7 @@ while (<STDIN>) {
     die "fields must include 4 elements" unless @member_fields == 4;
 
     my $file = $ARGV[0] || 'etc/hosts';
-    my ($name, $address, $role, $tags) = @member_fields;
+    my ($name, $address, undef, undef) = @member_fields;
     my $event = $ENV{SERF_EVENT};
 
     if ($event eq 'member-join') {
