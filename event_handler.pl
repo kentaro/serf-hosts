@@ -6,42 +6,47 @@ use Fcntl qw(:flock);
 use File::Temp qw(tempfile);
 use File::Copy;
 
-my $file = $ARGV[0] || 'etc/hosts';
-my ($name, $address, $role) = split(/\s+/, <STDIN>);
-my $event = $ENV{SERF_EVENT};
+while (<STDIN>) {
+    chomp;
+    my @member_fields = split("\t", $_);
+    die "fields must include 4 elements" unless @member_fields == 4;
 
-if ($event eq 'member-join') {
-    open my $fh, ">> ${file}" or die $!;
+    my $file = $ARGV[0] || 'etc/hosts';
+    my ($name, $address, undef, undef) = @member_fields;
+    my $event = $ENV{SERF_EVENT};
 
-    {
-        flock($fh, LOCK_EX);
-        print $fh "${address}\t${name}\n";
-        flock($fh, LOCK_UN);
-    }
+    if ($event eq 'member-join') {
+        open my $fh, ">> ${file}" or die $!;
 
-    close $fh;
-}
-elsif (
-    $event eq 'member-leave' ||
-    $event eq 'member-failed'
-) {
-    open my $fh, "< ${file}" or die $!;
-    my ($tmp_fh, $tmp_file) = tempfile();
-
-    {
-        flock($fh, LOCK_EX);
-        while (<$fh>) {
-            if ($_ !~ /${name}$/) {
-                print $tmp_fh $_;
-            }
+        {
+            flock($fh, LOCK_EX);
+            print $fh "${address}\t${name}\n";
+            flock($fh, LOCK_UN);
         }
-        flock($fh, LOCK_UN);
+
+        close $fh;
     }
+    elsif (
+        $event eq 'member-leave' ||
+        $event eq 'member-failed'
+    ) {
+        open my $fh, "< ${file}" or die $!;
+        my ($tmp_fh, $tmp_file) = tempfile();
 
-    close $fh;
-    close $tmp_fh;
+        {
+            flock($fh, LOCK_EX);
+            while (<$fh>) {
+                if ($_ !~ /${name}$/) {
+                    print $tmp_fh $_;
+                }
+            }
+            flock($fh, LOCK_UN);
+        }
 
-    File::Copy::move($tmp_file, $file) or
-        die "Failed to move ${tmp_file} to ${file}";
+        close $fh;
+        close $tmp_fh;
+
+        File::Copy::move($tmp_file, $file) or
+            die "Failed to move ${tmp_file} to ${file}";
+    }
 }
-
