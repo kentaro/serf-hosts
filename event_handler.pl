@@ -35,8 +35,9 @@ while (<STDIN>) {
 
         {
             flock($fh, LOCK_EX);
+            my $name_reg = quotemeta $name;
             while (<$fh>) {
-                if ($_ !~ /${name}$/) {
+                if ($_ !~ /${name_reg}$/) {
                     print $tmp_fh $_;
                 }
             }
