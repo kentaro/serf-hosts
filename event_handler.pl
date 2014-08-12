@@ -26,10 +26,7 @@ while (<STDIN>) {
 
         close $fh;
     }
-    elsif (
-        $event eq 'member-leave' ||
-        $event eq 'member-failed'
-    ) {
+    elsif ($event eq 'member-leave') {
         open my $fh, "< ${file}" or die $!;
         my ($tmp_fh, $tmp_file) = tempfile();
 
