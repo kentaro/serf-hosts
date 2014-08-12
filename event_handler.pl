@@ -16,7 +16,7 @@ while (<STDIN>) {
     my $event = $ENV{SERF_EVENT};
 
     if ($event eq 'member-join') {
-        open my $fh, ">> ${file}" or die $!;
+        open my $fh, ">>", $file or die $!;
 
         {
             flock($fh, LOCK_EX);
@@ -30,7 +30,7 @@ while (<STDIN>) {
         $event eq 'member-leave' ||
         $event eq 'member-failed'
     ) {
-        open my $fh, "< ${file}" or die $!;
+        open my $fh, "<", $file or die $!;
         my ($tmp_fh, $tmp_file) = tempfile();
 
         {
