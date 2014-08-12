@@ -26,17 +26,15 @@ while (<STDIN>) {
 
         close $fh;
     }
-    elsif (
-        $event eq 'member-leave' ||
-        $event eq 'member-failed'
-    ) {
+    elsif ($event eq 'member-leave') {
         open my $fh, "<", $file or die $!;
         my ($tmp_fh, $tmp_file) = tempfile();
 
         {
             flock($fh, LOCK_EX);
+            my $name_reg = quotemeta $name;
             while (<$fh>) {
-                if ($_ !~ /${name}$/) {
+                if ($_ !~ /${name_reg}$/) {
                     print $tmp_fh $_;
                 }
             }
@@ -45,6 +43,9 @@ while (<STDIN>) {
 
         close $fh;
         close $tmp_fh;
+
+        chmod 0644, $tmp_file or
+            die "Failed to change permission of ${tmp_file} into 0644";
 
         File::Copy::move($tmp_file, $file) or
             die "Failed to move ${tmp_file} to ${file}";
