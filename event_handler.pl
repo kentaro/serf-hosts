@@ -11,7 +11,7 @@ while (<STDIN>) {
     my @member_fields = split("\t", $_);
     die "fields must include 4 elements" unless @member_fields == 4;
 
-    my $file = $ARGV[0] || 'etc/hosts';
+    my $file = $ARGV[0] || '/etc/hosts';
     my ($name, $address, undef, undef) = @member_fields;
     my $event = $ENV{SERF_EVENT};
 
