@@ -6,10 +6,22 @@ use Fcntl qw(:flock);
 use File::Temp qw(tempfile);
 use File::Copy;
 
-while (<STDIN>) {
-    chomp;
-    my @member_fields = split("\t", $_);
-    die "fields must include 4 elements" unless @member_fields == 4;
+while (my $input = <STDIN>) {
+    chomp $input;
+
+    # $input is tab sperated 4 values.
+    # last 2 values can be empty string, so we can't do `split("\t", $input)`.
+    my @member_fields;
+    unless (@member_fields = $input =~ /
+        \A
+        ([^\t]+)\t  # name
+        ([^\t]+)\t  # address
+        ([^\t]*)\t  # role (allow empty)
+        ([^\t]*)    # tags (allow empty)
+        \z
+    /msx) {
+        die "fields must include 4 elements";
+    }
 
     my $file = $ARGV[0] || '/etc/hosts';
     my ($name, $address, undef, undef) = @member_fields;
