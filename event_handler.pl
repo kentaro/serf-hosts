@@ -8,7 +8,7 @@ use File::Copy;
 
 while (<STDIN>) {
     chomp;
-    my @member_fields = split("\t", $_);
+    my @member_fields = split("\t", $_, -1);
     die "fields must include 4 elements" unless @member_fields == 4;
 
     my $file = $ARGV[0] || '/etc/hosts';
